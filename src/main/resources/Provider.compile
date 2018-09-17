@@ -1,0 +1,21 @@
+//增强之后的Provider类invokeMethod方法
+
+public Object invokeMethod(Object o, String n, Class[] p, Object[] v) throws java.lang.reflect.InvocationTargetException{
+    z.learn.providerdemo.Provider w;
+    try{
+	    w = ((z.learn.providerdemo.Provider)$1);
+    }catch(Throwable e){
+	    throw new IllegalArgumentException(e);
+    }
+
+    try{
+        if( "saySomething".equals( $2 )  &&  $3.length == 1 ) {
+	        return ($w)w.saySomething((java.lang.String)$4[0]);
+        } if( "sayHello".equals( $2 )  &&  $3.length == 1 ) {
+            return ($w)w.sayHello((java.lang.String)$4[0]);
+        }
+    } catch(Throwable e) {
+	        throw new java.lang.reflect.InvocationTargetException(e);
+    }
+    throw new com.alibaba.dubbo.common.bytecode.NoSuchMethodException("Not found method \""+$2+"\" in class z.learn.providerdemo.Provider.");
+}

@@ -353,8 +353,8 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void doExportUrls() {
-        List<URL> registryURLs = loadRegistries(true);
-        for (ProtocolConfig protocolConfig : protocols) {
+        List<URL> registryURLs = loadRegistries(true);          // 所有配置的注册中心,转化为URL列表
+        for (ProtocolConfig protocolConfig : protocols) {               // 针对不同的protocol协议,分别注册
             doExportUrlsFor1Protocol(protocolConfig, registryURLs);
         }
     }
@@ -442,7 +442,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
                 map.put("revision", revision);
             }
 
-            String[] methods = Wrapper.getWrapper(interfaceClass).getMethodNames();
+            String[] methods = Wrapper.getWrapper(interfaceClass).getMethodNames();         // wrapper类定义了几个抽象方法 其中getMethodNames会返回interfaceClass里面的所有方法名
             if (methods.length == 0) {
                 logger.warn("NO method found in service interface " + interfaceClass.getName());
                 map.put(Constants.METHODS_KEY, Constants.ANY_VALUE);
