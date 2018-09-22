@@ -1,0 +1,3 @@
+stub=com.alibaba.dubbo.rpc.proxy.wrapper.StubProxyFactoryWrapper                // 加载时候会被设置到ExtensionLoader的 cachedWrapperClasses
+jdk=com.alibaba.dubbo.rpc.proxy.jdk.JdkProxyFactory                             // 加载时候会被设置到ExtensionLoader的 cachedClasses
+javassist=com.alibaba.dubbo.rpc.proxy.javassist.JavassistProxyFactory

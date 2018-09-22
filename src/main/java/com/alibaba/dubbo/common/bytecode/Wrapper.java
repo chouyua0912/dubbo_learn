@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 
 /**
- * Wrapper.         服务提供者实现的父类
+ * Wrapper.         服务提供者实现的父类      包装Provider
  */
 public abstract class Wrapper {
     private static final Map<Class<?>, Wrapper> WRAPPER_MAP = new ConcurrentHashMap<Class<?>, Wrapper>(); //class wrapper map
@@ -242,9 +242,9 @@ public abstract class Wrapper {
         cc.addMethod(c3.toString());
 
         try {
-            Class<?> wc = cc.toClass();
+            Class<?> wc = cc.toClass();                             // 包装Provider
             // setup static field.
-            wc.getField("pts").set(null, pts);              // 静态域设置时候用null
+            wc.getField("pts").set(null, pts);                  // 静态域设置时候用null
             wc.getField("pns").set(null, pts.keySet().toArray(new String[0]));
             wc.getField("mns").set(null, mns.toArray(new String[0]));
             wc.getField("dmns").set(null, dmns.toArray(new String[0]));

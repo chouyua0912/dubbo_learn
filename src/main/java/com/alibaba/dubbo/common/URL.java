@@ -426,7 +426,7 @@ public final class URL implements Serializable {
         return value;
     }
 
-    public String getParameter(String key, String defaultValue) {
+    public String getParameter(String key, String defaultValue) {       // 包含默认值的方法
         String value = getParameter(key);
         if (value == null || value.length() == 0) {
             return defaultValue;

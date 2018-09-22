@@ -19,3 +19,5 @@ public Object invokeMethod(Object o, String n, Class[] p, Object[] v) throws jav
     }
     throw new com.alibaba.dubbo.common.bytecode.NoSuchMethodException("Not found method \""+$2+"\" in class z.learn.providerdemo.Provider.");
 }
+
+// getMethodNames 方法会返回 Provider接口中定义的所有方法组成的数组

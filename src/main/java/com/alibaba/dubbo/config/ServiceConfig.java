@@ -63,17 +63,17 @@ import static com.alibaba.dubbo.common.utils.NetUtils.isInvalidLocalHost;
 import static com.alibaba.dubbo.common.utils.NetUtils.isInvalidPort;
 
 /**
- * ServiceConfig
+ * ServiceConfig  exportUrl protocol.export封装出来Exporter, proxyFactory创建invoker处理链
  *
  * @export
  */
 public class ServiceConfig<T> extends AbstractServiceConfig {
 
     private static final long serialVersionUID = 3033787999037024738L;
-
+                                                            // 指定获取Protocol协议扩展             获取适配的协议扩展
     private static final Protocol protocol = ExtensionLoader.getExtensionLoader(Protocol.class).getAdaptiveExtension();
 
-    private static final ProxyFactory proxyFactory = ExtensionLoader.getExtensionLoader(ProxyFactory.class).getAdaptiveExtension();
+    private static final ProxyFactory proxyFactory = ExtensionLoader.getExtensionLoader(ProxyFactory.class).getAdaptiveExtension(); // ProxyFactory$Adaptive https://cloud.tencent.com/developer/article/1008573
 
     private static final Map<String, Integer> RANDOM_PORT_MAP = new HashMap<String, Integer>();
 
@@ -84,7 +84,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
     private String interfaceName;
     private Class<?> interfaceClass;
     // reference to interface impl
-    private T ref;
+    private T ref;                                          // 存储实际服务的实现类 对象
     // service name
     private String path;
     // method configuration
@@ -314,7 +314,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
         if (path == null || path.length() == 0) {
             path = interfaceName;
         }
-        doExportUrls();
+        doExportUrls();                 // 暴露服务到注册中心
         ProviderModel providerModel = new ProviderModel(getUniqueServiceName(), this, ref);
         ApplicationModel.initProviderModel(getUniqueServiceName(), providerModel);
     }
@@ -441,7 +441,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
             if (revision != null && revision.length() > 0) {
                 map.put("revision", revision);
             }
-
+                                // Wrapper 参考 Provider.compile
             String[] methods = Wrapper.getWrapper(interfaceClass).getMethodNames();         // wrapper类定义了几个抽象方法 其中getMethodNames会返回interfaceClass里面的所有方法名
             if (methods.length == 0) {
                 logger.warn("NO method found in service interface " + interfaceClass.getName());
@@ -469,7 +469,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
 
         String host = this.findConfigedHosts(protocolConfig, registryURLs, map);
         Integer port = this.findConfigedPorts(protocolConfig, name, map);
-        URL url = new URL(name, host, port, (contextPath == null || contextPath.length() == 0 ? "" : contextPath + "/") + path, map);
+        URL url = new URL(name, host, port, (contextPath == null || contextPath.length() == 0 ? "" : contextPath + "/") + path, map);   // 服务暴露的地址
 
         if (ExtensionLoader.getExtensionLoader(ConfiguratorFactory.class)
                 .hasExtension(url.getProtocol())) {
@@ -483,7 +483,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
 
             // export to local if the config is not remote (export to remote only when config is remote)
             if (!Constants.SCOPE_REMOTE.toString().equalsIgnoreCase(scope)) {
-                exportLocal(url);
+                exportLocal(url);               // 暴露本地服务
             }
             // export to remote if the config is not local (export to local only when config is local)
             if (!Constants.SCOPE_LOCAL.toString().equalsIgnoreCase(scope)) {
@@ -525,9 +525,9 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
                     .setProtocol(Constants.LOCAL_PROTOCOL)
                     .setHost(LOCALHOST)
                     .setPort(0);
-            ServiceClassHolder.getInstance().pushServiceClass(getServiceClass(ref));
-            Exporter<?> exporter = protocol.export(
-                    proxyFactory.getInvoker(ref, (Class) interfaceClass, local));
+            ServiceClassHolder.getInstance().pushServiceClass(getServiceClass(ref));    // 最后组装出来的是 ListenerExporterWrapper, exporter里面包含invoker处理链ProtocolFilterWrapper
+            Exporter<?> exporter = protocol.export(                                     // 通过ExtensionLoader加载的扩展 Protocol$Adaptive 和 ProxyFactory$Adaptive
+                    proxyFactory.getInvoker(ref, (Class) interfaceClass, local));       //
             exporters.add(exporter);
             logger.info("Export dubbo service " + interfaceClass.getName() + " to local registry");
         }

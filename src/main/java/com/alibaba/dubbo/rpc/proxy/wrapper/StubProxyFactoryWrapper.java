@@ -35,8 +35,8 @@ import com.alibaba.dubbo.rpc.service.GenericService;
 
 import java.lang.reflect.Constructor;
 
-/**
- * StubProxyFactoryWrapper
+/**装饰器模式
+ * StubProxyFactoryWrapper      包装ProxyFactory实现类,JdkProxyFactory,JavassistProxyFactory
  */
 public class StubProxyFactoryWrapper implements ProxyFactory {
 
@@ -50,7 +50,7 @@ public class StubProxyFactoryWrapper implements ProxyFactory {
         this.proxyFactory = proxyFactory;
     }
 
-    public void setProtocol(Protocol protocol) {
+    public void setProtocol(Protocol protocol) {        // 会被动态注入Protocol$Adaptive,通过ExtensionLoader注入
         this.protocol = protocol;
     }
 

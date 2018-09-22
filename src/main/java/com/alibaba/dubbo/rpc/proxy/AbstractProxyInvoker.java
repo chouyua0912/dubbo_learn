@@ -26,11 +26,11 @@ import com.alibaba.dubbo.rpc.RpcResult;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * InvokerWrapper       ProxyFactory创建出来的动态类的超类
+ * InvokerWrapper       ProxyFactory创建出来的动态类的超类         代理用户的实现类,实现针对Invocation路由到实际Impl的具体方法上
  */
 public abstract class AbstractProxyInvoker<T> implements Invoker<T> {
 
-    private final T proxy;
+    private final T proxy;      // 被代理
 
     private final Class<T> type;
 
