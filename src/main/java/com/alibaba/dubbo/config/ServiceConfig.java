@@ -483,12 +483,12 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
 
             // export to local if the config is not remote (export to remote only when config is remote)
             if (!Constants.SCOPE_REMOTE.toString().equalsIgnoreCase(scope)) {
-                exportLocal(url);               // 暴露本地服务
+                exportLocal(url);                                                                               // 暴露本地local服务!!
             }
             // export to remote if the config is not local (export to local only when config is local)
             if (!Constants.SCOPE_LOCAL.toString().equalsIgnoreCase(scope)) {
                 if (logger.isInfoEnabled()) {
-                    logger.info("Export dubbo service " + interfaceClass.getName() + " to url " + url);
+                    logger.info("Export dubbo service " + interfaceClass.getName() + " to url " + url);     // 再次暴露远程服务到url!! 暴露了2次
                 }
                 if (registryURLs != null && !registryURLs.isEmpty()) {
                     for (URL registryURL : registryURLs) {
@@ -497,7 +497,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
                         if (monitorUrl != null) {
                             url = url.addParameterAndEncoded(Constants.MONITOR_KEY, monitorUrl.toFullString());
                         }
-                        if (logger.isInfoEnabled()) {
+                        if (logger.isInfoEnabled()) {                                                           // 注册服务到注册中心registry
                             logger.info("Register dubbo service " + interfaceClass.getName() + " url " + url + " to registry " + registryURL);
                         }
                         Invoker<?> invoker = proxyFactory.getInvoker(ref, (Class) interfaceClass, registryURL.addParameterAndEncoded(Constants.EXPORT_KEY, url.toFullString()));

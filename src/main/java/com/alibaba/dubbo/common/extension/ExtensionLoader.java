@@ -561,7 +561,7 @@ public class ExtensionLoader<T> {
     }
 
     // synchronized in getExtensionClasses
-    private Map<String, Class<?>> loadExtensionClasses() {
+    private Map<String, Class<?>> loadExtensionClasses() {              /** type是构造函数时候出传入的 (实例方法) **/
         final SPI defaultAnnotation = type.getAnnotation(SPI.class);    // 从绑定的type class获取SPI注解的实例
         if (defaultAnnotation != null) {
             String value = defaultAnnotation.value();
